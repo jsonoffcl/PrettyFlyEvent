@@ -212,16 +212,21 @@ page jumps as it loads. Check the markup against that list after any rebuild.
 
 ## Deployment
 
-Hosted free on Netlify, connected to a GitHub repo — a push to `main` publishes. The
-originals and video (~487MB) are gitignored, so the published tree is about 20MB.
+Hosted free on Netlify, connected to `github.com/jsonoffcl/PrettyFlyEvent` — a push to
+`main` publishes. The originals and video (~487MB) are gitignored, so the published tree
+is about 20MB. Live at `prettyflyevent.netlify.app` until the domain is attached.
 
 `netlify.toml` holds the config: images and CSS are cached for a year since their names
 are stable, HTML revalidates every request so edits appear immediately, and a CSP limits
 the page to its own assets plus Google Fonts. There is no build step.
 
-Domain: **prettyflyevents.com** (and `.ca`, both confirmed available 2026-10-26). Note
-that `prettyflyeventcreations.com` — the name matching the wordmark and the Instagram
-handle — is already registered to someone else and does not resolve.
+Domain: **prettyflyevents.ca** — the owner's choice. Canonical tags, `og:url`, `og:image`,
+`sitemap.xml`, and `robots.txt` are all hardcoded to it; changing the domain means editing
+all five pages plus those two files.
+
+`prettyflyevents.com` was also free as of 2026-10-26 and is worth registering defensively
+to redirect at the `.ca`. Note that `prettyflyeventcreations.com` — the name matching the
+wordmark and the Instagram handle — is registered to someone else and does not resolve.
 
 ## Open
 

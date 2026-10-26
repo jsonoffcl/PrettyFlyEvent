@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://prettyflyevents.com/sitemap.xml
+Sitemap: https://prettyflyevents.ca/sitemap.xml
