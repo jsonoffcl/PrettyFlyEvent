@@ -1,0 +1,616 @@
+/* PrettyFly Event Creations
+   The room with the lights down. The work is evening, uplit and mostly black-and-gold,
+   so the page is the dark room, panels are the lit tables, and brass is the uplight.
+   One cream relief band per page keeps it from going flat. */
+
+:root {
+  --field: #141110;   /* deep warm black — the room */
+  --plate: #262019;   /* raised panel — the lit table */
+  --ink:   #f4ede3;   /* warm cream — primary text */
+  --brass: #c9a227;   /* uplight gold, bright enough to hold on black */
+  --stone: #a2958a;   /* secondary text on the dark field */
+
+  /* the cream relief band — same five roles, lights up */
+  --relief:       #efe7d9;
+  --relief-ink:   #2e2823;
+  --relief-stone: #6b6057;
+  --relief-brass: #7e6019;  /* gold has to darken to stay legible on cream */
+
+  --rule: 1px solid var(--brass);
+  --hair: 1px solid rgba(244, 237, 227, .16);
+
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --text: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --band: clamp(4.5rem, 11vh, 9rem);
+  --measure: 62ch;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* the sticky nav must never cover a control that just received keyboard focus */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  margin: 0;
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: var(--field);
+  padding: .75rem 1.25rem;
+  z-index: 100;
+}
+.skip:focus { left: 0; }
+
+/* ---------- type ---------- */
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -.01em;
+}
+
+/* Headlines bound their own measure and let the browser balance the wrap, so the
+   break point survives any viewport, font fallback, or copy edit. No hardcoded <br>. */
+.display {
+  font-size: clamp(2.75rem, 9.5vw, 7rem);
+  line-height: .95;
+  max-inline-size: 16ch;
+  text-wrap: balance;
+}
+
+.head {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.07;
+  max-inline-size: 15ch;
+  text-wrap: balance;
+}
+
+.subhead {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.15;
+}
+
+.lede {
+  font-size: clamp(1.2rem, 2.1vw, 1.5rem);
+  line-height: 1.45;
+  font-weight: 300;
+  max-width: 28ch;
+}
+
+p { max-width: var(--measure); margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+.caps {
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.quiet { color: var(--stone); }
+
+/* ---------- shell ---------- */
+
+.wrap {
+  max-width: 1420px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.band { padding-block: var(--band); }
+
+/* a band that continues the one above it — no second helping of top padding */
+.band--continued { padding-top: 0; }
+
+/* A last band that shares the footer's dark field can run straight into it — there's no
+   seam to hide. The cream relief band is a different colour from the footer, so it keeps
+   its bottom padding; without it the photos butt into the dark edge. */
+main > .band:not(.inverse):last-child { padding-bottom: 0; }
+
+/* ---------- nav ---------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--field);
+  border-bottom: var(--hair);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 1rem;
+}
+
+.mark {
+  text-decoration: none;
+  display: block;
+  line-height: 1;
+}
+
+/* The script mark carries the name, so the descriptor underneath stays live text — the
+   logo's own version of it is 7% of the lockup height and would land at ~3px here. */
+.mark__logo {
+  display: block;
+  height: 2.5rem;
+  width: auto;
+}
+
+.mark__sub {
+  display: block;
+  font-size: .625rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-top: .3rem;
+}
+
+.nav__links {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 12px caps are small, so the link pads out to clear the 24px minimum pointer
+   target without moving the gold underline off the baseline. */
+.nav__links a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding-top: .5rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid transparent;
+}
+
+.nav__links a:hover { border-bottom-color: var(--brass); }
+.nav__links a[aria-current="page"] { border-bottom-color: var(--brass); color: var(--brass); }
+
+.nav__toggle {
+  display: none;
+  background: none;
+  border: var(--hair);
+  color: inherit;
+  font: inherit;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .55rem 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .nav__toggle { display: block; }
+  .nav__links {
+    display: none;
+    position: absolute;
+    inset: 100% 0 auto;
+    background: var(--field);
+    border-bottom: var(--hair);
+    flex-direction: column;
+    gap: 0;
+    padding: var(--gutter) var(--gutter) calc(var(--gutter) + .5rem);
+  }
+  .nav__links[data-open="true"] { display: flex; }
+  .nav__links a {
+    display: block;
+    font-size: 1rem;
+    padding-block: .9rem;
+    border-bottom: var(--hair);
+  }
+  .nav { position: relative; }
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: min(84vh, 760px);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  background: var(--field);
+}
+
+.hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The corporate photo's subject — the FAIR marquee letters — sits in the left third and
+   low in the frame, so a centred crop slices the letters in half on a phone and buries
+   them behind the headline on a desktop. The two components each own a breakpoint: a
+   narrow hero crops horizontally, so 12% holds the letters in frame; a wide hero crops
+   vertically, so 66% keeps them above the headline without showing bare floor. */
+.hero__img--offset-left {
+  object-position: 12% 66%;
+}
+
+/* The celebrations photo is the one portrait source in the hero set, and its subject —
+   the lettering on the arch — sits in the upper third. A wide hero keeps only a band of
+   a portrait image, so without this the band lands on blank backdrop below the text. */
+.hero__img--offset-top {
+  object-position: 44% 34%;
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  /* Weighted to the bottom third, where the headline sits. These photos are real
+     rooms with white linen and pale florals, so a gentle wash is not enough —
+     cream type over a lit tablecloth disappears without this much cover. */
+  background: linear-gradient(to top,
+    rgba(20,17,16,.94) 0%,
+    rgba(20,17,16,.86) 26%,
+    rgba(20,17,16,.58) 48%,
+    rgba(20,17,16,.28) 72%,
+    rgba(20,17,16,.14) 100%);
+}
+
+.hero__body {
+  position: relative;
+  padding-block: clamp(2.5rem, 7vh, 5rem);
+  color: var(--ink);
+}
+
+.hero__body .lede { color: var(--ink); opacity: .86; max-width: 34ch; }
+
+.hero .display { margin-bottom: 1.25rem; }
+
+/* one orchestrated moment: the reveal on load */
+.reveal > * {
+  opacity: 0;
+  transform: translateY(1.1rem);
+  animation: rise .9s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.reveal > *:nth-child(2) { animation-delay: .18s; }
+.reveal > *:nth-child(3) { animation-delay: .32s; }
+
+@keyframes rise {
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal > * { animation: none; opacity: 1; transform: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+/* ---------- statement ---------- */
+
+.statement {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  border-top: var(--rule);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 860px) {
+  .statement { grid-template-columns: 38% minmax(0, 1fr); }
+}
+
+/* a statement that opens a page needs no rule above it */
+.statement--open { border-top: 0; padding-top: 0; }
+
+.statement p { font-size: clamp(1.1rem, 1.7vw, 1.3rem); }
+
+/* ---------- the three doors ---------- */
+
+.doors {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.door {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.door__frame {
+  display: block;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--plate);
+}
+
+.door__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .7s cubic-bezier(.22,.61,.36,1);
+}
+
+.door:hover .door__frame img,
+.door:focus-visible .door__frame img { transform: scale(1.035); }
+
+/* colour is set explicitly: plates stay light even inside .inverse */
+.door__plate {
+  display: block;
+  background: var(--plate);
+  color: var(--ink);
+  padding: 1.35rem 1.4rem 1.5rem;
+  margin: -3.25rem 1.25rem 0;
+  position: relative;
+}
+
+.door__name {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.05;
+  margin: 0 0 .5rem;
+}
+
+.door__text {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--stone);
+}
+
+.door__more,
+.linkout {
+  display: inline-block;
+  margin-top: .9rem;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border-bottom: 1px solid transparent;
+  padding-bottom: .2rem;
+  text-decoration: none;
+}
+
+.door:hover .door__more,
+.door:focus-visible .door__more,
+.linkout:hover { border-bottom-color: var(--brass); }
+
+@media (prefers-reduced-motion: reduce) {
+  .door__frame img { transition: none; }
+  .door:hover .door__frame img { transform: none; }
+}
+
+/* ---------- relief band (lights up) ---------- */
+
+.inverse {
+  background: var(--relief);
+  color: var(--relief-ink);
+}
+
+/* Gold has to darken on cream to stay legible, and secondary text with it. */
+.inverse .linkout,
+.inverse .contact__lines a:hover .contact__value { color: var(--relief-brass); }
+.inverse .linkout:hover,
+.inverse .foot__links a:hover { border-bottom-color: var(--relief-brass); }
+.inverse :focus-visible { outline-color: var(--relief-brass); }
+
+.inverse .quiet,
+.inverse .shot figcaption { color: var(--relief-stone); }
+.inverse .statement { border-top-color: var(--relief-brass); }
+/* the door plate stays a dark panel wherever it sits, so its own pairing holds */
+.inverse .door__plate { color: var(--ink); }
+.inverse .door__text { color: var(--stone); }
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: clamp(.75rem, 1.5vw, 1.25rem);
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+.strip img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+/* ---------- gallery ---------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.75rem, 2vw, 1.75rem);
+}
+
+@media (min-width: 900px) {
+  .gallery { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .shot--wide  { grid-column: span 6; }
+  .shot--land  { grid-column: span 4; }
+  .shot--port  { grid-column: span 2; }
+  .shot--third { grid-column: span 2; }
+  .shot--half  { grid-column: span 3; }
+}
+
+/* Fixed ratios keep grid rows flush. Every shape here is one the phone library
+   actually produces — 3:2, 4:3, 3:4 — so nothing gets cropped to fit a slot it
+   was never shot for. There is no 2:1 source material, hence no 2:1 slot. */
+.shot { margin: 0; }
+.shot img { width: 100%; height: 100%; object-fit: cover; }
+.shot--wide img  { aspect-ratio: 3 / 2; }
+.shot--port img  { aspect-ratio: 3 / 4; }
+.shot--land img  { aspect-ratio: 3 / 2; }
+.shot--third img { aspect-ratio: 4 / 3; }
+.shot--half img  { aspect-ratio: 4 / 3; }
+
+@media (max-width: 899px) {
+  .shot--wide { grid-column: span 2; }
+  .shot--wide img { aspect-ratio: 3 / 2; }
+}
+
+.shot figcaption {
+  font-size: .8125rem;
+  color: var(--stone);
+  margin-top: .6rem;
+  letter-spacing: .02em;
+}
+
+/* ---------- covers list ---------- */
+
+.covers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2;
+  column-gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+@media (max-width: 620px) { .covers { columns: 1; } }
+
+.covers li {
+  break-inside: avoid;
+  padding: .85rem 0;
+  border-bottom: var(--hair);
+  font-size: 1rem;
+}
+
+.inverse .covers li { border-bottom-color: rgba(239,231,217,.2); }
+
+/* ---------- contact ---------- */
+
+.contact__lines {
+  list-style: none;
+  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  padding: 0;
+  border-top: var(--rule);
+}
+
+.contact__lines li { border-bottom: var(--hair); }
+
+.contact__lines a,
+.contact__lines span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem 1.5rem;
+  padding-block: 1.4rem;
+  text-decoration: none;
+}
+
+.contact__lines a:hover .contact__value { color: var(--brass); }
+
+.contact__key {
+  flex: 0 0 9rem;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+/* The email is one unbreakable 33-character token, so the type has to scale down far
+   enough to seat it on narrow phones — at a 20px floor it overshot by 11px and threw
+   a single letter onto its own line. overflow-wrap stays as the last-resort net. */
+.contact__value {
+  font-family: var(--display);
+  font-size: clamp(1rem, 4.4vw, 2rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- footer ---------- */
+
+.foot {
+  background: var(--plate);
+  color: var(--ink);
+  padding-block: clamp(3rem, 7vw, 5rem);
+}
+
+.foot__top {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 820px) {
+  .foot__top { grid-template-columns: minmax(0, 1fr) auto; }
+}
+
+.foot__logo {
+  display: block;
+  height: clamp(3.25rem, 7vw, 5.25rem);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left;
+}
+
+.foot__sub {
+  font-size: .6875rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(239,231,217,.6);
+  margin-top: .9rem;
+}
+
+.foot__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+}
+
+.foot__links a {
+  text-decoration: none;
+  font-size: .8125rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid transparent;
+  padding-bottom: .15rem;
+}
+
+.foot__links a:hover { border-bottom-color: var(--brass); }
+
+.foot__base {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(239,231,217,.2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  justify-content: space-between;
+  font-size: .6875rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(239,231,217,.6);
+}
+
+/* ---------- page head (sub-pages) ---------- */
+
+.pagehead .display { max-width: 14ch; }

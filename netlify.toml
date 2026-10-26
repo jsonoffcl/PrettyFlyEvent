@@ -1,0 +1,32 @@
+# This is a plain static site — no build step. Netlify publishes the repo root as-is.
+[build]
+  publish = "."
+  command = ""
+
+# The photos are the bulk of every page and their filenames are stable, so they can be
+# cached hard. The HTML can't be: it has to pick up edits immediately, so it revalidates
+# on every request and only transfers when it has actually changed.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # The site loads fonts from Google and nothing else, and it has no forms or logins.
+    # These say so explicitly, so a stray injected script has nowhere to send anything.
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
